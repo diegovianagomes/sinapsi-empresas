@@ -40,8 +40,8 @@ export default function ResearcherLoginPage() {
     <div className="container mx-auto px-4 py-8 md:py-12 flex items-center justify-center min-h-[80vh]">
       <Card className="w-full max-w-md">
         <CardHeader>
-          <CardTitle>Área do Pesquisador</CardTitle>
-          <CardDescription>Digite a senha para acessar os resultados da pesquisa</CardDescription>
+          <CardTitle>Área do Restrita</CardTitle>
+          <CardDescription>Digite a senha para acessar os resultados do estudo</CardDescription>
         </CardHeader>
         <form onSubmit={handleLogin}>
           <CardContent>
