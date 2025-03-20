@@ -19,7 +19,7 @@ export default function Home() {
             <Link href="/student-auth">Iniciar Estudo</Link>
           </Button>
           <Button asChild variant="outline" size="lg" className="w-full sm:w-auto">
-            <Link href="/researcher-login">Ver Resultados (Pesquisador)</Link>
+            <Link href="/researcher-login">Ver Resultados (Área do Pesquisador)</Link>
           </Button>
         </div>
       </div>
