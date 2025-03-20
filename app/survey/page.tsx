@@ -119,14 +119,14 @@ export default function SurveyPage() {
           if (!submitResponse.ok) {
             const errorData = await submitResponse.json()
             console.error("Erro na resposta do servidor:", errorData)
-            throw new Error(errorData.message || "Erro ao enviar pesquisa")
+            throw new Error(errorData.message || "Erro ao enviar as respostas")
           }
 
           const submitData = await submitResponse.json()
 
           toast({
-            title: "Pesquisa enviada com sucesso!",
-            description: "Obrigado por participar da nossa pesquisa.",
+            title: "Respostas enviado com sucesso!",
+            description: "Obrigado por participar da nosso estudo.",
           })
 
           // Clear student session data
@@ -137,11 +137,11 @@ export default function SurveyPage() {
             router.push("/")
           }, 2000)
         } catch (error) {
-          console.error("Erro ao enviar pesquisa:", error)
+          console.error("Erro ao enviar o estudo:", error)
           toast({
             title: "Erro",
             description:
-              error instanceof Error ? error.message : "Ocorreu um erro ao enviar sua pesquisa. Tente novamente.",
+              error instanceof Error ? error.message : "Ocorreu um erro ao enviar suas respostas. Tente novamente.",
             variant: "destructive",
           })
           setIsSubmitting(false)

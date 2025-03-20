@@ -66,7 +66,7 @@ export default function StudentAuthPage() {
       if (checkData.isUsed) {
         toast({
           title: "E-mail já tá em uso!",
-          description: "Ops, esse e-mail já participou da pesquisa.",
+          description: "Ops, esse e-mail já participou do estudo.",
           variant: "destructive",
         })
         setIsSubmitting(false)
@@ -115,7 +115,7 @@ export default function StudentAuthPage() {
     <div className="container mx-auto px-4 py-8 md:py-12 flex items-center justify-center min-h-[80vh]">
       <Card className="w-full max-w-md">
         <CardHeader>
-          <CardTitle>Acesso à Pesquisa</CardTitle>
+          <CardTitle>Acesso ao Estudo</CardTitle>
           <CardDescription>
             Por favor, informe seu e-mail e o seu período para prosseguir. Apenas o período será registrado para análise e cada e-mail poderá ser utilizado apenas uma vez.
           </CardDescription>
