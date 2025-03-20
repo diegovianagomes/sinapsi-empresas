@@ -395,7 +395,7 @@ export default function ResultsPage() {
       <Card className="mb-4 sm:mb-8">
         <CardHeader className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4">
           <div>
-            <CardTitle className="text-xl sm:text-2xl">Resultados da Pesquisa</CardTitle>
+            <CardTitle className="text-xl sm:text-2xl">Resultados do Estudo</CardTitle>
             <CardDescription>Visualização dos dados coletados ({responses.length} respostas)</CardDescription>
           </div>
           <div className="flex flex-col sm:flex-row gap-2 sm:gap-4 w-full sm:w-auto">
@@ -428,7 +428,7 @@ export default function ResultsPage() {
       <Card className="mb-6">
         <CardHeader>
           <CardTitle>Gerenciamento de Dados</CardTitle>
-          <CardDescription>Controle os emails e respostas da pesquisa</CardDescription>
+          <CardDescription>Controle os emails e respostas do estudo</CardDescription>
         </CardHeader>
         <CardContent>
           <div className="flex flex-col gap-4">
