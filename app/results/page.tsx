@@ -129,7 +129,9 @@ const renderCustomPieLabel = (props: any) => {
 
 export default function ResultsPage() {
   // Register the infinity loader
-  infinity.register()
+  useEffect(() => {
+    infinity.register()
+  }, [])
   const router = useRouter()
   const [responses, setResponses] = useState<any[]>([])
   const [chartData, setChartData] = useState<Record<string, any[]>>({})
