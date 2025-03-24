@@ -1,6 +1,7 @@
 "use client"
 
 import { useEffect, useState } from "react"
+import { infinity } from 'ldrs'
 import { useRouter } from "next/navigation"
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card"
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"
@@ -21,8 +22,8 @@ import {
 import { Button } from "@/components/ui/button"
 import { useMediaQuery } from "@/hooks/use-media-query"
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select"
+import { Toaster } from "sonner"
 import { toast } from "@/components/ui/use-toast"
-import { Toaster } from "@/components/ui/toaster"
 import {
   AlertDialog,
   AlertDialogAction,
@@ -129,6 +130,8 @@ const renderCustomPieLabel = (props: any) => {
 }
 
 export default function ResultsPage() {
+  // Register the infinity loader
+  infinity.register()
   const router = useRouter()
   const [responses, setResponses] = useState<any[]>([])
   const [chartData, setChartData] = useState<Record<string, any[]>>({})
@@ -346,8 +349,15 @@ export default function ResultsPage() {
 
   if (isLoading) {
     return (
-      <div className="container mx-auto px-4 py-12 flex items-center justify-center min-h-[80vh]">
-        <p>Carregando dados...</p>
+      <div className="min-h-screen flex items-center justify-center">
+        <l-infinity
+          size="55"
+          stroke="4"
+          stroke-length="0.15"
+          bg-opacity="0.1"
+          speed="1.3" 
+          color="black"
+        ></l-infinity>
       </div>
     )
   }
@@ -440,54 +450,8 @@ export default function ResultsPage() {
                 Total de respostas coletadas: <strong>{responses.length}</strong>
               </p>
 
-              <div className="flex flex-col sm:flex-row gap-2 mt-4">
-                <AlertDialog>
-                  <AlertDialogTrigger asChild>
-                    <Button variant="secondary" size="sm" disabled={isResetting}>
-                      {isResetting ? "Processando..." : "Resetar Lista de Emails"}
-                    </Button>
-                  </AlertDialogTrigger>
-                  <AlertDialogContent>
-                    <AlertDialogHeader>
-                      <AlertDialogTitle>Resetar lista de emails?</AlertDialogTitle>
-                      <AlertDialogDescription>
-                        Tem certeza que deseja limpar a lista de emails utilizados? Isso permitirá que os mesmos emails
-                        sejam usados novamente.
-                      </AlertDialogDescription>
-                    </AlertDialogHeader>
-                    <AlertDialogFooter>
-                      <AlertDialogCancel>Cancelar</AlertDialogCancel>
-                      <AlertDialogAction onClick={handleResetEmails}>Confirmar</AlertDialogAction>
-                    </AlertDialogFooter>
-                  </AlertDialogContent>
-                </AlertDialog>
+              
 
-                <AlertDialog>
-                  <AlertDialogTrigger asChild>
-                    <Button variant="destructive" size="sm" disabled={isResetting}>
-                      {isResetting ? "Processando..." : "Resetar Todos os Dados"}
-                    </Button>
-                  </AlertDialogTrigger>
-                  <AlertDialogContent>
-                    <AlertDialogHeader>
-                      <AlertDialogTitle>Resetar todos os dados?</AlertDialogTitle>
-                      <AlertDialogDescription>
-                        ATENÇÃO: Tem certeza que deseja limpar TODAS as respostas da pesquisa? Esta ação não pode ser
-                        desfeita.
-                      </AlertDialogDescription>
-                    </AlertDialogHeader>
-                    <AlertDialogFooter>
-                      <AlertDialogCancel>Cancelar</AlertDialogCancel>
-                      <AlertDialogAction onClick={handleResetAllData}>Confirmar</AlertDialogAction>
-                    </AlertDialogFooter>
-                  </AlertDialogContent>
-                </AlertDialog>
-              </div>
-
-              <p className="mt-2 text-sm text-muted-foreground">
-                Atenção: Resetar a lista de emails permitirá que os mesmos emails sejam utilizados novamente. Resetar
-                todos os dados apagará permanentemente todas as respostas coletadas.
-              </p>
             </div>
           </div>
         </CardContent>

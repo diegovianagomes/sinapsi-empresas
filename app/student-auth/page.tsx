@@ -9,8 +9,8 @@ import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle }
 import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select"
+import { Toaster } from "sonner"
 import { toast } from "@/components/ui/use-toast"
-import { Toaster } from "@/components/ui/toaster"
 
 export default function StudentAuthPage() {
   const router = useRouter()
@@ -20,7 +20,7 @@ export default function StudentAuthPage() {
   const [isSubmitting, setIsSubmitting] = useState(false)
 
   const validateEmail = (email: string) => {
-    const regex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/
+    const regex = /^[^\s@]+@souunilavras\.com$/
     return regex.test(email)
   }
 
@@ -36,7 +36,7 @@ export default function StudentAuthPage() {
     if (!email) {
       newErrors.email = "O email é obrigatório"
     } else if (!validateEmail(email)) {
-      newErrors.email = "Por favor, insira um email válido"
+      newErrors.email = "Por favor, insira um email institucional válido (zahahadid@souunilavras.com)"
     }
 
     if (!period) {

@@ -1,5 +1,6 @@
 import { createServerSupabaseClient } from "@/lib/supabase/server"
 import { NextResponse } from "next/server"
+import { compareEmailWithHash } from "@/lib/utils/email-crypto"
 
 export async function POST(request: Request) {
   try {
@@ -15,17 +16,32 @@ export async function POST(request: Request) {
     const { data, error } = await supabase
       .from("used_emails")
       .select("email")
-      .eq("email", email.toLowerCase())
-      .maybeSingle()
 
     if (error) {
       console.error("Erro ao verificar email:", error)
       return NextResponse.json({ error: "Erro ao verificar email" }, { status: 500 })
     }
 
+    // Verifica se o email termina com @sounilavras.com
+    if (!email.toLowerCase().endsWith("@souunilavras.com")) {
+      return NextResponse.json({
+        isUsed: false,
+        message: "Email inválido. Use um email @souunilavras.com"
+      })
+    }
+
+    // Verifica se o email já foi usado comparando com os hashes armazenados
+    let isUsed = false
+    for (const record of data || []) {
+      if (await compareEmailWithHash(email, record.email)) {
+        isUsed = true
+        break
+      }
+    }
+
     return NextResponse.json({
-      isUsed: !!data,
-      message: data ? "Email já utilizado" : "Email disponível",
+      isUsed: isUsed,
+      message: isUsed ? "Email já utilizado" : "Email disponível",
     })
   } catch (error) {
     console.error("Erro ao processar requisição:", error)

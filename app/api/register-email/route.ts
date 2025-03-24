@@ -1,5 +1,6 @@
 import { createServerSupabaseClient } from "@/lib/supabase/server"
 import { NextResponse } from "next/server"
+import { hashEmail } from "@/lib/utils/email-crypto"
 
 export async function POST(request: Request) {
   try {
@@ -11,8 +12,19 @@ export async function POST(request: Request) {
 
     const supabase = createServerSupabaseClient()
 
+    // Verifica se o email termina com @sounilavras.com
+    if (!email.toLowerCase().endsWith("@souunilavras.com")) {
+      return NextResponse.json({
+        success: false,
+        message: "Email inválido. Use um email @souunilavras.com"
+      }, { status: 400 })
+    }
+
+    // Criptografa o email antes de salvar
+    const hashedEmail = await hashEmail(email)
+
     // Registrar o email como usado
-    const { error } = await supabase.from("used_emails").insert({ email: email.toLowerCase() })
+    const { error } = await supabase.from("used_emails").insert({ email: hashedEmail })
 
     if (error) {
       // Se o erro for de unicidade, significa que o email já foi usado
@@ -20,7 +32,7 @@ export async function POST(request: Request) {
         return NextResponse.json(
           {
             success: false,
-            message: "Este email já foi utilizado para responder à pesquisa.",
+            message: "Este email já foi utilizado para responder ao es.",
           },
           { status: 409 },
         )

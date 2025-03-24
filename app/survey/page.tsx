@@ -6,8 +6,8 @@ import { Button } from "@/components/ui/button"
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from "@/components/ui/card"
 import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group"
 import { Label } from "@/components/ui/label"
+import { Toaster } from "sonner"
 import { toast } from "@/components/ui/use-toast"
-import { Toaster } from "@/components/ui/toaster"
 
 // Define the survey questions
 const surveyBlocks = [
@@ -134,7 +134,7 @@ export default function SurveyPage() {
           sessionStorage.removeItem("studentPeriod")
 
           setTimeout(() => {
-            router.push("/")
+            router.push("/survey-completed")
           }, 2000)
         } catch (error) {
           console.error("Erro ao enviar o estudo:", error)
@@ -220,7 +220,7 @@ export default function SurveyPage() {
             Anterior
           </Button>
           <div className="text-sm text-muted-foreground">
-            Bloco {currentBlock + 1} de {surveyBlocks.length}
+            {currentBlock + 1} de {surveyBlocks.length}
           </div>
           <Button onClick={handleNext} disabled={isSubmitting} className="w-full sm:w-auto">
             {isSubmitting ? "Enviando..." : currentBlock < surveyBlocks.length - 1 ? "Próximo" : "Enviar"}
