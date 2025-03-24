@@ -1,7 +1,9 @@
 "use client"
 
 import { useEffect, useState } from "react"
-import dynamic from 'ldrs'
+import dynamic from "next/dynamic"
+
+
 import { useRouter } from "next/navigation"
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card"
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"
@@ -36,14 +38,6 @@ import {
 
 // Adicione a importação do componente AdvancedAnalysis
 import { AdvancedAnalysis } from "@/components/advanced-analysis"
-
-const LInfinity = dynamic(
-  () => import('ldrs').then(mod => {
-    mod.infinity.register() // Registre o componente no lado do cliente
-    return mod.infinity
-  }),
-  { ssr: false }
-)
 // Define the survey blocks for reference
 const surveyBlocks = [
   {
@@ -354,14 +348,7 @@ export default function ResultsPage() {
   if (isLoading) {
     return (
       <div className="min-h-screen flex items-center justify-center">
-        <l-infinity
-          size="55"
-          stroke="4"
-          stroke-length="0.15"
-          bg-opacity="0.1"
-          speed="1.3" 
-          color="black"
-        ></l-infinity>
+        <p>Loading...</p>
       </div>
     )
   }
