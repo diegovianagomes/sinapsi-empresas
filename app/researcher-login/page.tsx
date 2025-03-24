@@ -19,8 +19,8 @@ export default function ResearcherLoginPage() {
   const handleLogin = (e: React.FormEvent) => {
     e.preventDefault()
 
-    // Check if password matches
-    if (password === "123456") {
+    // Check if password matches with environment variable
+    if (password === process.env.NEXT_PUBLIC_RESEARCHER_PASSWORD) {
       // Set authenticated state in localStorage
       localStorage.setItem("researcherAuthenticated", "true")
 

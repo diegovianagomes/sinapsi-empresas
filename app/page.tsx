@@ -18,7 +18,12 @@ export default function Home() {
           <Button asChild size="lg" className="w-full sm:w-auto">
             <Link href="/student-auth">Iniciar Estudo</Link>
           </Button>
-          <Button asChild variant="outline" size="lg" className="w-full sm:w-auto">
+          <Button
+            asChild
+            variant="outline"
+            size="lg"
+            className="w-full sm:w-auto"
+          >
             <Link href="/researcher-login">Área Restrita</Link>
           </Button>
         </div>

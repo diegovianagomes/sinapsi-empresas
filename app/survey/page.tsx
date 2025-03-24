@@ -12,7 +12,7 @@ import { toast } from "@/components/ui/use-toast"
 // Define the survey questions
 const surveyBlocks = [
   {
-    title: "Bloco 01: Como eu me vejo",
+    title: "Como eu me vejo",
     questions: [
       { id: "q1", text: "Sou capaz de desenvolver as habilidades exigidas pelo curso." },
       { id: "q2", text: "Costumo duvidar da qualidade dos meus projetos em comparação com os dos colegas." },
@@ -23,7 +23,7 @@ const surveyBlocks = [
     ],
   },
   {
-    title: "Bloco 02: Como eu vejo o mundo",
+    title: "Como eu vejo o mundo",
     questions: [
       { id: "q7", text: "O esforço e dedicação sempre resultam em sucesso." },
       { id: "q8", text: "O aprendizado é um processo contínuo e posso melhorar ao longo do tempo." },
@@ -33,7 +33,7 @@ const surveyBlocks = [
     ],
   },
   {
-    title: "Bloco 03: Como eu vejo as pessoas e o futuro",
+    title: "Como eu vejo as pessoas e o futuro",
     questions: [
       { id: "q12", text: "Os professores e colegas estão dispostos a me ajudar em meu desenvolvimento acadêmico." },
       { id: "q13", text: "As críticas feitas pelos professores e colegas são justas e ajudam no meu aprendizado." },
@@ -50,7 +50,7 @@ const surveyBlocks = [
     ],
   },
   {
-    title: "Bloco 04: Universidade",
+    title: "Universidade",
     questions: [
       { id: "q21", text: "A universidade fornece suporte adequado para meu desenvolvimento acadêmico e emocional." },
       { id: "q22", text: "A carga horária e os prazos estabelecidos pela universidade são realistas." },

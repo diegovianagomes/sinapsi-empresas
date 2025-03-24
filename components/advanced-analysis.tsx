@@ -18,6 +18,8 @@ import {
   Legend,
   ResponsiveContainer,
 } from "recharts"
+import { AmPieChart } from "@/components/am-pie-chart"
+import { AmBarChart } from "@/components/am-bar-chart"
 
 // Função para exportar dados para Excel (simplificada)
 const exportToExcel = (data: any[], fileName: string) => {
@@ -194,19 +196,7 @@ export function AdvancedAnalysis({ responses, chartData }: AdvancedAnalysisProps
     "#0ea5e9", // Azul (Concordo Totalmente)
   ]
 
-  const renderCustomPieLabel = (props: any) => {
-    const { cx, cy, midAngle, innerRadius, outerRadius, percent, index } = props
-    const RADIAN = Math.PI / 180
-    const radius = innerRadius + (outerRadius - innerRadius) * 0.5
-    const x = cx + radius * Math.cos(-midAngle * RADIAN)
-    const y = cy + radius * Math.sin(-midAngle * RADIAN)
-
-    return percent > 0.05 ? (
-      <text x={x} y={y} fill="white" textAnchor={x > cx ? "start" : "end"} dominantBaseline="central" fontSize={12}>
-        {`${(percent * 100).toFixed(0)}%`}
-      </text>
-    ) : null
-  }
+  
 
   // Verificar se temos dados para exibir
   if (responses.length === 0 || Object.keys(chartData).length === 0) {
@@ -245,71 +235,36 @@ export function AdvancedAnalysis({ responses, chartData }: AdvancedAnalysisProps
 
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
             {/* Gráfico de Pizza - Distribuição Geral */}
-            <Card>
-              <CardHeader>
-                <CardTitle className="text-base">Distribuição Geral das Respostas</CardTitle>
-                <CardDescription>Visão geral de todas as respostas da pesquisa</CardDescription>
-              </CardHeader>
-              <CardContent>
-                <div className="h-[300px] w-full">
-                  <ResponsiveContainer width="100%" height="100%">
-                    <PieChart>
-                      <Pie
-                        data={aggregatedData}
-                        cx="50%"
-                        cy="50%"
-                        labelLine={false}
-                        label={renderCustomPieLabel}
-                        outerRadius={120}
-                        fill="#8884d8"
-                        dataKey="value"
-                      >
-                        {aggregatedData.map((entry, index) => (
-                          <Cell key={`cell-${index}`} fill={chartColors[index % chartColors.length]} />
-                        ))}
-                      </Pie>
-                      <Tooltip formatter={(value) => [value, ""]} />
-                      <Legend />
-                    </PieChart>
-                  </ResponsiveContainer>
-                </div>
-              </CardContent>
-            </Card>
+            <AmPieChart
+              data={aggregatedData}
+              title="Distribuição Geral das Respostas"
+              description="Visão geral de todas as respostas da pesquisa"
+              colors={chartColors}
+              nameKey="name"
+              dataKey="value"
+            />
 
             {/* Gráfico de Barras Vertical - Contagem de Respostas */}
-            <Card>
-              <CardHeader>
-                <CardTitle className="text-base">Contagem de Respostas por Opção</CardTitle>
-                <CardDescription>Total de respostas para cada opção</CardDescription>
-              </CardHeader>
-              <CardContent>
-                <div className="h-[300px] w-full">
-                  <ResponsiveContainer width="100%" height="100%">
-                    <BarChart
-                      data={aggregatedData}
-                      layout="vertical"
-                      margin={{ top: 20, right: 30, left: 20, bottom: 5 }}
-                    >
-                      <CartesianGrid strokeDasharray="3 3" />
-                      <XAxis type="number" />
-                      <YAxis dataKey="name" type="category" width={150} />
-                      <Tooltip />
-                      <Legend />
-                      <Bar dataKey="value" name="Quantidade" fill="#3b82f6" />
-                    </BarChart>
-                  </ResponsiveContainer>
-                </div>
-              </CardContent>
-            </Card>
+            <AmBarChart
+              data={aggregatedData}
+              title="Contagem de Respostas por Opção"
+              description="Total de respostas para cada opção"
+              xAxisKey="name"
+              bars={[{
+                dataKey: "value",
+                name: "Quantidade",
+                color: "#3b82f6"
+              }]}
+            />
           </div>
 
           <div className="mt-6">
             <h3 className="text-lg font-semibold mb-4">Análise por Questão</h3>
 
             <Tabs defaultValue={Object.keys(questionData)[0] || ""}>
-              <TabsList className="flex flex-wrap">
+              <TabsList className="flex flex-wrap gap-1 h-auto p-1 bg-muted/20">
                 {Object.keys(questionData).map((key) => (
-                  <TabsTrigger key={key} value={key} className="text-xs">
+                  <TabsTrigger key={key} value={key} className="text-xs px-2 py-1 whitespace-nowrap">
                     {key.replace("-", " ").toUpperCase()}
                   </TabsTrigger>
                 ))}
@@ -324,62 +279,27 @@ export function AdvancedAnalysis({ responses, chartData }: AdvancedAnalysisProps
                   <TabsContent key={key} value={key}>
                     <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
                       {/* Gráfico de Pizza por Questão */}
-                      <Card>
-                        <CardHeader>
-                          <CardTitle className="text-base">{`${questionId.toUpperCase()}: Distribuição`}</CardTitle>
-                          <CardDescription className="text-xs line-clamp-2">{question?.question || ""}</CardDescription>
-                        </CardHeader>
-                        <CardContent>
-                          <div className="h-[300px] w-full">
-                            <ResponsiveContainer width="100%" height="100%">
-                              <PieChart>
-                                <Pie
-                                  data={data}
-                                  cx="50%"
-                                  cy="50%"
-                                  labelLine={false}
-                                  label={renderCustomPieLabel}
-                                  outerRadius={120}
-                                  fill="#8884d8"
-                                  dataKey="value"
-                                >
-                                  {data.map((entry, index) => (
-                                    <Cell key={`cell-${index}`} fill={chartColors[index % chartColors.length]} />
-                                  ))}
-                                </Pie>
-                                <Tooltip formatter={(value) => [value, ""]} />
-                                <Legend />
-                              </PieChart>
-                            </ResponsiveContainer>
-                          </div>
-                        </CardContent>
-                      </Card>
+                      <AmPieChart
+                        data={data}
+                        title={`${questionId.toUpperCase()}: Distribuição`}
+                        description={question?.question || ""}
+                        colors={chartColors}
+                        nameKey="name"
+                        dataKey="value"
+                      />
 
                       {/* Gráfico de Barras Vertical por Questão */}
-                      <Card>
-                        <CardHeader>
-                          <CardTitle className="text-base">{`${questionId.toUpperCase()}: Contagem`}</CardTitle>
-                          <CardDescription className="text-xs line-clamp-2">{question?.question || ""}</CardDescription>
-                        </CardHeader>
-                        <CardContent>
-                          <div className="h-[300px] w-full">
-                            <ResponsiveContainer width="100%" height="100%">
-                              <BarChart
-                                data={data}
-                                layout="vertical"
-                                margin={{ top: 20, right: 30, left: 20, bottom: 5 }}
-                              >
-                                <CartesianGrid strokeDasharray="3 3" />
-                                <XAxis type="number" />
-                                <YAxis dataKey="name" type="category" width={150} />
-                                <Tooltip />
-                                <Legend />
-                                <Bar dataKey="value" name="Quantidade" fill="#3b82f6" />
-                              </BarChart>
-                            </ResponsiveContainer>
-                          </div>
-                        </CardContent>
-                      </Card>
+                      <AmBarChart
+                        data={data}
+                        title={`${questionId.toUpperCase()}: Contagem`}
+                        description={question?.question || ""}
+                        xAxisKey="name"
+                        bars={[{
+                          dataKey: "value",
+                          name: "Quantidade",
+                          color: "#3b82f6"
+                        }]}
+                      />
                     </div>
                   </TabsContent>
                 )

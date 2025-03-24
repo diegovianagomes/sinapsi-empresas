@@ -15,10 +15,8 @@ import {
   ResponsiveContainer,
   Legend,
   LabelList,
-  PieChart,
-  Pie,
-  Cell,
 } from "recharts"
+import { PeriodDistributionChart } from "@/components/period-distribution-chart"
 import { Button } from "@/components/ui/button"
 import { useMediaQuery } from "@/hooks/use-media-query"
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select"
@@ -42,8 +40,8 @@ import { AdvancedAnalysis } from "@/components/advanced-analysis"
 // Define the survey blocks for reference
 const surveyBlocks = [
   {
-    id: "bloco1",
-    title: "Bloco 01: Como eu me vejo",
+    id: "b01",
+    title: "Como eu me vejo",
     questions: [
       { id: "q1", text: "Sou capaz de desenvolver as habilidades exigidas pelo curso." },
       { id: "q2", text: "Costumo duvidar da qualidade dos meus projetos em comparação com os dos colegas." },
@@ -54,8 +52,8 @@ const surveyBlocks = [
     ],
   },
   {
-    id: "bloco2",
-    title: "Bloco 02: Como eu vejo o mundo",
+    id: "b02",
+    title: "Como eu vejo o mundo",
     questions: [
       { id: "q7", text: "O esforço e dedicação sempre resultam em sucesso." },
       { id: "q8", text: "O aprendizado é um processo contínuo e posso melhorar ao longo do tempo." },
@@ -65,8 +63,8 @@ const surveyBlocks = [
     ],
   },
   {
-    id: "bloco3",
-    title: "Bloco 03: Como eu vejo as pessoas e o futuro",
+    id: "b03",
+    title: "Como eu vejo as pessoas e o futuro",
     questions: [
       { id: "q12", text: "Os professores e colegas estão dispostos a me ajudar em meu desenvolvimento acadêmico." },
       { id: "q13", text: "As críticas feitas pelos professores e colegas são justas e ajudam no meu aprendizado." },
@@ -83,8 +81,8 @@ const surveyBlocks = [
     ],
   },
   {
-    id: "bloco4",
-    title: "Bloco 04: Universidade",
+    id: "b04",
+    title: "Universidade",
     questions: [
       { id: "q21", text: "A universidade fornece suporte adequado para meu desenvolvimento acadêmico e emocional." },
       { id: "q22", text: "A carga horária e os prazos estabelecidos pela universidade são realistas." },
@@ -401,33 +399,33 @@ export default function ResultsPage() {
   }
 
   return (
-    <div className="container mx-auto px-2 sm:px-4 py-4 sm:py-8">
-      <Card className="mb-4 sm:mb-8">
-        <CardHeader className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4">
-          <div>
-            <CardTitle className="text-xl sm:text-2xl">Resultados do Estudo</CardTitle>
-            <CardDescription>Visualização dos dados coletados ({responses.length} respostas)</CardDescription>
+    <div className="container mx-auto px-4 py-6 space-y-6 max-w-7xl">
+      <Card>
+        <CardHeader className="flex flex-col lg:flex-row items-start lg:items-center justify-between gap-4 pb-2">
+          <div className="space-y-1.5">
+            <CardTitle className="text-2xl font-bold">Resultados do Estudo</CardTitle>
+            <CardDescription className="text-base">Visualização dos dados coletados ({responses.length} respostas)</CardDescription>
           </div>
-          <div className="flex flex-col sm:flex-row gap-2 sm:gap-4 w-full sm:w-auto">
-            <div className="flex items-center gap-2">
+          <div className="flex flex-col sm:flex-row items-center gap-4 w-full sm:w-auto">
+            <div className="flex items-center gap-2 shadow-sm rounded-lg border p-1 bg-background/50 w-full sm:w-auto">
               <Button
-                variant={selectedView === "horizontal" ? "default" : "outline"}
+                variant={selectedView === "horizontal" ? "default" : "ghost"}
                 onClick={() => setSelectedView("horizontal")}
                 size="sm"
-                className="flex-1 sm:flex-none"
+                className="flex-1 sm:flex-none transition-colors"
               >
                 Horizontal
               </Button>
               <Button
-                variant={selectedView === "vertical" ? "default" : "outline"}
+                variant={selectedView === "vertical" ? "default" : "ghost"}
                 onClick={() => setSelectedView("vertical")}
                 size="sm"
-                className="flex-1 sm:flex-none"
+                className="flex-1 sm:flex-none transition-colors"
               >
                 Vertical
               </Button>
             </div>
-            <Button variant="outline" onClick={handleLogout} size="sm" className="w-full sm:w-auto">
+            <Button variant="outline" onClick={handleLogout} size="sm" className="w-full sm:w-auto hover:bg-destructive/10">
               Sair
             </Button>
           </div>
@@ -435,92 +433,80 @@ export default function ResultsPage() {
       </Card>
 
       {/* Email Management */}
-      <Card className="mb-6">
-        <CardHeader>
-          <CardTitle>Gerenciamento de Dados</CardTitle>
+      <Card className="bg-card/50">
+        <CardHeader className="pb-3">
+          <CardTitle className="text-xl font-semibold">Gerenciamento de Dados</CardTitle>
           <CardDescription>Controle os emails e respostas do estudo</CardDescription>
         </CardHeader>
         <CardContent>
-          <div className="flex flex-col gap-4">
-            <div>
-              <p className="mb-2">
-                Total de emails utilizados: <strong>{emailCount}</strong>
-              </p>
-              <p className="mb-2">
-                Total de respostas coletadas: <strong>{responses.length}</strong>
-              </p>
-
-              
-
+          <div className="grid gap-6 sm:grid-cols-2">
+            <div className="p-4 rounded-lg bg-background/80 border shadow-sm">
+              <p className="text-sm font-medium text-muted-foreground mb-1">Total de emails utilizados</p>
+              <p className="text-2xl font-bold">{emailCount}</p>
+            </div>
+            <div className="p-4 rounded-lg bg-background/80 border shadow-sm">
+              <p className="text-sm font-medium text-muted-foreground mb-1">Total de respostas coletadas</p>
+              <p className="text-2xl font-bold">{responses.length}</p>
             </div>
           </div>
         </CardContent>
       </Card>
 
       {/* Period Distribution Chart */}
-      <Card className="mb-6">
-        <CardHeader>
-          <CardTitle>Distribuição por Período</CardTitle>
+      <Card className="bg-card/50">
+        <CardHeader className="pb-3">
+          <CardTitle className="text-xl font-semibold">Distribuição por Período</CardTitle>
           <CardDescription>Número de respostas por período acadêmico</CardDescription>
         </CardHeader>
         <CardContent>
-          <div className="h-[300px]">
-            <ResponsiveContainer width="100%" height="100%">
-              <PieChart>
-                <Pie
-                  data={periodData}
-                  cx="50%"
-                  cy="50%"
-                  labelLine={true}
-                  label={renderCustomPieLabel}
-                  outerRadius={120}
-                  fill="#8884d8"
-                  dataKey="value"
-                >
-                  {periodData.map((entry, index) => (
-                    <Cell key={`cell-${index}`} fill={periodColors[index % periodColors.length]} />
-                  ))}
-                </Pie>
-                <Legend />
-                <ChartTooltip />
-              </PieChart>
-            </ResponsiveContainer>
+          <div className="h-[400px] sm:h-[350px]">
+            <PeriodDistributionChart data={periodData} isMobile={isMobile} />
           </div>
         </CardContent>
       </Card>
 
       {/* Period Filter */}
-      <Card className="mb-6">
-        <CardHeader>
-          <CardTitle>Filtrar por Período</CardTitle>
+      <Card className="bg-card/50">
+        <CardHeader className="pb-3">
+          <CardTitle className="text-xl font-semibold flex items-center gap-2">
+            <span>Filtrar por Período</span>
+            <span className="text-sm font-normal text-muted-foreground">({responses.length} respostas)</span>
+          </CardTitle>
           <CardDescription>Selecione um período específico para visualizar os resultados</CardDescription>
         </CardHeader>
         <CardContent>
-          <Select value={selectedPeriod} onValueChange={handlePeriodChange}>
-            <SelectTrigger className="w-full sm:w-[300px]">
-              <SelectValue placeholder="Selecione um período" />
-            </SelectTrigger>
-            <SelectContent>
-              <SelectItem value="all">Todos os períodos</SelectItem>
-              {availablePeriods.map((period) => (
-                <SelectItem key={period} value={period}>
-                  {period === "Não informado" ? period : `${period}º Período`}
-                </SelectItem>
-              ))}
-            </SelectContent>
-          </Select>
-          <p className="mt-2 text-sm text-muted-foreground">
-            {selectedPeriod === "all"
-              ? "Mostrando dados de todos os períodos"
-              : `Mostrando dados apenas do ${selectedPeriod}º período`}
-          </p>
+          <div className="space-y-4">
+            <Select value={selectedPeriod} onValueChange={handlePeriodChange}>
+              <SelectTrigger className="w-full sm:w-[300px] bg-background/80">
+                <SelectValue placeholder="Selecione um período" />
+              </SelectTrigger>
+              <SelectContent>
+                <SelectItem value="all">Todos os períodos</SelectItem>
+                {availablePeriods.map((period) => (
+                  <SelectItem key={period} value={period}>
+                    {period === "Não informado" ? period : `${period}º Período`}
+                  </SelectItem>
+                ))}
+              </SelectContent>
+            </Select>
+            <div className="flex items-center gap-2 text-sm text-muted-foreground bg-muted/30 p-2 rounded-md">
+              <span className="inline-block w-2 h-2 rounded-full bg-primary/70"></span>
+              {selectedPeriod === "all"
+                ? "Mostrando dados de todos os períodos"
+                : `Mostrando dados apenas do ${selectedPeriod}º período`}
+            </div>
+          </div>
         </CardContent>
       </Card>
 
-      <Tabs defaultValue="bloco1">
-        <TabsList className="grid grid-cols-2 md:grid-cols-4 mb-4 sm:mb-8">
+      <Tabs defaultValue="bloco1" className="space-y-4">
+        <TabsList className="grid grid-cols-2 lg:grid-cols-4 gap-2 bg-muted/30 p-1">
           {surveyBlocks.map((block) => (
-            <TabsTrigger key={block.id} value={block.id}>
+            <TabsTrigger 
+              key={block.id} 
+              value={block.id}
+              className="data-[state=active]:bg-background data-[state=active]:shadow-sm transition-all"
+            >
               {isMobile ? block.id.replace("bloco", "B") : block.title.split(":")[0]}
             </TabsTrigger>
           ))}
@@ -528,15 +514,18 @@ export default function ResultsPage() {
 
         {surveyBlocks.map((block) => (
           <TabsContent key={block.id} value={block.id}>
-            <Card>
-              <CardHeader>
-                <CardTitle className="text-lg sm:text-xl">{block.title}</CardTitle>
-                <CardDescription>
+            <Card className="bg-card/50 border-4">
+              <CardHeader className="pb-2">
+                <CardTitle className="text-xl font-semibold">{block.title}</CardTitle>
+                <CardDescription className="text-sm">
                   Distribuição das respostas para cada pergunta (1 = Discordo Totalmente, 4 = Concordo Totalmente)
                 </CardDescription>
               </CardHeader>
-              <CardContent>
-                <div style={{ height: `${getChartHeight(block.id)}px` }} className="w-full">
+              <CardContent className="pt-4">
+                <div 
+                  style={{ height: `${getChartHeight(block.id)}px` }} 
+                  className="w-full bg-background/80 p-4 rounded-lg border shadow-sm"
+                >
                   {chartData[block.id] && (
                     <ChartContainer
                       config={{
@@ -557,7 +546,7 @@ export default function ResultsPage() {
                           color: chartColors[3],
                         },
                       }}
-                      className="h-full"
+                      className="h-full transition-all hover:opacity-95"
                     >
                       <ResponsiveContainer width="100%" height="100%">
                         {selectedView === "horizontal" || isMobile ? (
@@ -692,7 +681,7 @@ export default function ResultsPage() {
       </Tabs>
 
       <div className="mt-8">
-        <h2 className="text-2xl font-bold mb-4">Análise Avançada</h2>
+        
         <AdvancedAnalysis responses={responses} chartData={chartData} />
       </div>
 
