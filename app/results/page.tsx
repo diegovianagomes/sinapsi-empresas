@@ -1,7 +1,7 @@
 "use client"
 
 import { useEffect, useState } from "react"
-import { infinity } from 'ldrs'
+import dynamic from 'ldrs'
 import { useRouter } from "next/navigation"
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card"
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"
@@ -37,6 +37,13 @@ import {
 // Adicione a importação do componente AdvancedAnalysis
 import { AdvancedAnalysis } from "@/components/advanced-analysis"
 
+const LInfinity = dynamic(
+  () => import('ldrs').then(mod => {
+    mod.infinity.register() // Registre o componente no lado do cliente
+    return mod.infinity
+  }),
+  { ssr: false }
+)
 // Define the survey blocks for reference
 const surveyBlocks = [
   {
@@ -128,10 +135,7 @@ const renderCustomPieLabel = (props: any) => {
 }
 
 export default function ResultsPage() {
-  // Register the infinity loader
-  useEffect(() => {
-    infinity.register()
-  }, [])
+  
   const router = useRouter()
   const [responses, setResponses] = useState<any[]>([])
   const [chartData, setChartData] = useState<Record<string, any[]>>({})
