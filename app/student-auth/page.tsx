@@ -34,13 +34,13 @@ export default function StudentAuthPage() {
     const newErrors: { email?: string; period?: string } = {}
 
     if (!email) {
-      newErrors.email = "O email é obrigatório"
+      newErrors.email = "Ei! Não esqueça de informar seu e-mail 😊"
     } else if (!validateEmail(email)) {
-      newErrors.email = "Por favor, insira um email válido"
+      newErrors.email = "Ops! Esse e-mail parece estar incorreto. Tente novamente ✨"
     }
 
     if (!period) {
-      newErrors.period = "O período é obrigatório"
+      newErrors.period = "Por favor, selecione um período para continuar 😉"
     }
 
     // If there are errors, show them and return
@@ -65,8 +65,8 @@ export default function StudentAuthPage() {
 
       if (checkData.isUsed) {
         toast({
-          title: "E-mail já tá em uso!",
-          description: "Ops, esse e-mail já participou do estudo.",
+          title: "Este e-mail já foi usado!",
+          description: "Parece que esse e-mail já participou do estudo. 😊",
           variant: "destructive",
         })
         setIsSubmitting(false)
@@ -104,7 +104,7 @@ export default function StudentAuthPage() {
       console.error("Erro ao processar autenticação:", error)
       toast({
         title: "Erro",
-        description: "Ocorreu um erro ao processar sua solicitação. Tente novamente.",
+        description: "Algo deu errado ao processar sua solicitação. Que tal tentar novamente? 😊",
         variant: "destructive",
       })
       setIsSubmitting(false)
@@ -117,21 +117,21 @@ export default function StudentAuthPage() {
         <CardHeader>
           <CardTitle>Acesso ao Estudo</CardTitle>
           <CardDescription>
-            Por favor, informe seu e-mail e o seu período para prosseguir. Apenas o período será registrado para análise e cada e-mail poderá ser utilizado apenas uma vez.
+            Informe seu e-mail e escolha o período para prosseguir. Apenas o período será armazenado para análise, e cada e-mail pode ser utilizado uma única vez.
           </CardDescription>
         </CardHeader>
         <form onSubmit={handleSubmit}>
           <CardContent>
             <div className="grid gap-4">
               <div className="grid gap-2">
-                <Label htmlFor="email">Email Institucional</Label>
+                <Label htmlFor="email">Seu E-mail</Label>
                 <Input
                   id="email"
                   type="email"
                   value={email}
                   onChange={(e) => setEmail(e.target.value)}
                   className={errors.email ? "border-red-500" : ""}
-                  placeholder="oscarniemeyer@souunilavras.com"
+                  placeholder="oscar@niemeyer.com.br"
                 />
                 {errors.email && <p className="text-sm text-red-500">{errors.email}</p>}
               </div>
@@ -140,7 +140,7 @@ export default function StudentAuthPage() {
                 <Label htmlFor="period">Período</Label>
                 <Select value={period} onValueChange={setPeriod}>
                   <SelectTrigger id="period" className={errors.period ? "border-red-500" : ""}>
-                    <SelectValue placeholder="Selecione seu período" />
+                    <SelectValue placeholder="Selecione o seu período" />
                   </SelectTrigger>
                   <SelectContent>
                     <SelectItem value="1">1º Período</SelectItem>

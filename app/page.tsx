@@ -14,8 +14,8 @@ export default function Home() {
           Este estudo tem como objetivo coletar informações sobre percepções acadêmicas. Suas respostas são anônimas e
           serão utilizadas apenas para fins de pesquisa.
         </p>
-        <div className="flex flex-col sm:flex-row justify-center gap-3 md:gap-4">
-          <Button asChild size="lg" className="w-full sm:w-auto">
+        <div className="flex flex-col sm:flex-row justify-center gap-3 md:gap-4 p-8">
+          <Button asChild size="lg" className="flex w-full sm:w-auto">
             <Link href="/student-auth">Iniciar Estudo</Link>
           </Button>
           
