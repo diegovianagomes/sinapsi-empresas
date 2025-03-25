@@ -2,12 +2,25 @@ import { createServerSupabaseClient } from "@/lib/supabase/server"
 import { NextResponse } from "next/server"
 import { compareEmailWithHash } from "@/lib/utils/email-crypto"
 
+import { cache, generateCacheKey } from '@/lib/cache';
+
 export async function POST(request: Request) {
   try {
     const { email } = await request.json()
 
     if (!email) {
       return NextResponse.json({ error: "Email é obrigatório" }, { status: 400 })
+    }
+
+    // Verificar cache primeiro
+    const cacheKey = generateCacheKey('email-check', { email });
+    const cachedResult = cache.get(cacheKey);
+    
+    if (cachedResult !== undefined) {
+      return NextResponse.json({
+        isUsed: cachedResult,
+        message: cachedResult ? "Email já utilizado" : "Email disponível",
+      });
     }
 
     const supabase = createServerSupabaseClient()
@@ -30,6 +43,9 @@ export async function POST(request: Request) {
         break
       }
     }
+
+    // Armazenar resultado no cache
+    cache.set(cacheKey, isUsed, 300); // Cache por 5 minutos
 
     return NextResponse.json({
       isUsed: isUsed,
