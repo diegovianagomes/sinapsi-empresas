@@ -12,14 +12,6 @@ export async function POST(request: Request) {
 
     const supabase = createServerSupabaseClient()
 
-    // Verifica se o email termina com @sounilavras.com
-    if (!email.toLowerCase().endsWith("@souunilavras.com")) {
-      return NextResponse.json({
-        success: false,
-        message: "Email inválido. Use um email @souunilavras.com"
-      }, { status: 400 })
-    }
-
     // Criptografa o email antes de salvar
     const hashedEmail = await hashEmail(email)
 

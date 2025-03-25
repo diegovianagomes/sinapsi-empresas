@@ -22,14 +22,6 @@ export async function POST(request: Request) {
       return NextResponse.json({ error: "Erro ao verificar email" }, { status: 500 })
     }
 
-    // Verifica se o email termina com @sounilavras.com
-    if (!email.toLowerCase().endsWith("@souunilavras.com")) {
-      return NextResponse.json({
-        isUsed: false,
-        message: "Email inválido. Use um email @souunilavras.com"
-      })
-    }
-
     // Verifica se o email já foi usado comparando com os hashes armazenados
     let isUsed = false
     for (const record of data || []) {

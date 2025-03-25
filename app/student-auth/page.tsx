@@ -20,7 +20,7 @@ export default function StudentAuthPage() {
   const [isSubmitting, setIsSubmitting] = useState(false)
 
   const validateEmail = (email: string) => {
-    const regex = /^[^\s@]+@souunilavras\.com$/
+    const regex = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/
     return regex.test(email)
   }
 
@@ -36,7 +36,7 @@ export default function StudentAuthPage() {
     if (!email) {
       newErrors.email = "O email é obrigatório"
     } else if (!validateEmail(email)) {
-      newErrors.email = "Por favor, insira um email institucional válido (zahahadid@souunilavras.com)"
+      newErrors.email = "Por favor, insira um email válido"
     }
 
     if (!period) {
