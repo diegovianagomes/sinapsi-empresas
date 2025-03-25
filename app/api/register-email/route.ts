@@ -2,25 +2,12 @@ import { createServerSupabaseClient } from "@/lib/supabase/server"
 import { NextResponse } from "next/server"
 import { hashEmail } from "@/lib/utils/email-crypto"
 
-import { cache, generateCacheKey } from '@/lib/cache';
-
 export async function POST(request: Request) {
   try {
     const { email } = await request.json()
 
     if (!email) {
       return NextResponse.json({ error: "Email é obrigatório" }, { status: 400 })
-    }
-
-    // Verificar cache primeiro
-    const cacheKey = generateCacheKey('email-register', { email });
-    const cachedResult = cache.get(cacheKey);
-    
-    if (cachedResult !== undefined) {
-      return NextResponse.json({
-        success: false,
-        message: "Este email já foi utilizado para responder ao questionário.",
-      }, { status: 409 });
     }
 
     const supabase = createServerSupabaseClient()
@@ -37,7 +24,7 @@ export async function POST(request: Request) {
         return NextResponse.json(
           {
             success: false,
-            message: "Este email já foi utilizado para responder ao es.",
+            message: "Este email já foi utilizado para responder ao questionário.",
           },
           { status: 409 },
         )
@@ -53,20 +40,17 @@ export async function POST(request: Request) {
       )
     }
 
-    // Armazenar no cache após registro bem-sucedido
-    cache.set(cacheKey, true, 300); // Cache por 5 minutos
-
-    return NextResponse.json({
-      success: true,
-      message: "Email registrado com sucesso",
-    })
-  } catch (error) {
-    console.error("Erro ao processar requisição:", error)
     return NextResponse.json(
       {
-        success: false,
-        message: "Erro interno do servidor",
+        success: true,
+        message: "Email registrado com sucesso",
       },
+      { status: 201 },
+    )
+  } catch (error) {
+    console.error("Erro ao registrar email:", error)
+    return NextResponse.json(
+      { error: "Erro ao registrar email" },
       { status: 500 },
     )
   }
