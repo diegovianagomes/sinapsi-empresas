@@ -16,7 +16,7 @@ const surveyBlocks = [
     questions: [
       { id: "q1", text: "Sou capaz de desenvolver as habilidades exigidas pelo curso." },
       { id: "q2", text: "Costumo duvidar da qualidade dos meus projetos em comparação com os dos colegas." },
-      { id: "q3", text: "Quando recebo críticas nos, sou capaz de usá-las de forma construtiva." },
+      { id: "q3", text: "Quando recebo críticas, sou capaz de usá-las de forma construtiva." },
       { id: "q4", text: "Sou impedido de arriscar ideias novas nos projetos por medo de errar." },
       { id: "q5", text: "Sou emocionalmente afetado(a) por críticas negativas no geral." },
       { id: "q6", text: "Acho que as coisas têm que ser como penso, do contrário isso me afeta." },
