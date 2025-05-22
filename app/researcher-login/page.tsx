@@ -20,7 +20,7 @@ export default function ResearcherLoginPage() {
     e.preventDefault()
 
     // Check if password matches with environment variable
-    if (password === process.env.NEXT_PUBLIC_RESEARCHER_PASSWORD) {
+    if (password === process.env.NEXT_PUBLIC_RESEARCHER_PASSWORD_2) {
       // Set authenticated state in localStorage
       localStorage.setItem("researcherAuthenticated", "true")
 
