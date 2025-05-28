@@ -9,7 +9,7 @@ export default function Home() {
           <img src="/logo1.svg" alt="" className="w-16 md:w-24 h-auto"/>
           <img src="/logo2.svg" alt="" className="w-48 md:w-64 h-auto"/>
         </div>
-        <h1 className="text-2xl md:text-3xl font-bold mb-4 md:mb-6">Vivências e Saúde Mental do Estudante de Arquitetura</h1>
+        <h1 className="text-2xl md:text-3xl font-bold mb-4 md:mb-6">Tests</h1>
         <p className="text-base md:text-lg mb-6 md:mb-8">
           Este estudo tem como objetivo coletar informações sobre percepções acadêmicas. Suas respostas são anônimas e
           serão utilizadas apenas para fins de pesquisa.

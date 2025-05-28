@@ -39,9 +39,9 @@ export default function StudentAuthPage() {
       newErrors.email = "Ops! Esse e-mail parece estar incorreto. Tente novamente ✨"
     }
 
-    if (!period) {
-      newErrors.period = "Por favor, selecione um período para continuar 😉"
-    }
+    //if (!period) {
+    //  newErrors.period = "Por favor, selecione um período para continuar 😉"
+    //}
 
     // If there are errors, show them and return
     if (Object.keys(newErrors).length > 0) {
@@ -95,7 +95,7 @@ export default function StudentAuthPage() {
       }
 
       // Store student period in session storage (not the email)
-      sessionStorage.setItem("studentPeriod", period)
+      //sessionStorage.setItem("studentPeriod", period)
       sessionStorage.setItem("studentAuthenticated", "true")
 
       // Redirect to survey
@@ -136,27 +136,7 @@ export default function StudentAuthPage() {
                 {errors.email && <p className="text-sm text-red-500">{errors.email}</p>}
               </div>
 
-              <div className="grid gap-2">
-                <Label htmlFor="period">Período</Label>
-                <Select value={period} onValueChange={setPeriod}>
-                  <SelectTrigger id="period" className={errors.period ? "border-red-500" : ""}>
-                    <SelectValue placeholder="Selecione o seu período" />
-                  </SelectTrigger>
-                  <SelectContent>
-                    <SelectItem value="1">1º Período</SelectItem>
-                    <SelectItem value="2">2º Período</SelectItem>
-                    <SelectItem value="3">3º Período</SelectItem>
-                    <SelectItem value="4">4º Período</SelectItem>
-                    <SelectItem value="5">5º Período</SelectItem>
-                    <SelectItem value="6">6º Período</SelectItem>
-                    <SelectItem value="7">7º Período</SelectItem>
-                    <SelectItem value="8">8º Período</SelectItem>
-                    <SelectItem value="9">9º Período</SelectItem>
-                    <SelectItem value="10">10º Período</SelectItem>
-                  </SelectContent>
-                </Select>
-                {errors.period && <p className="text-sm text-red-500">{errors.period}</p>}
-              </div>
+
             </div>
           </CardContent>
           <CardFooter>

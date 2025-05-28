@@ -1,9 +1,6 @@
 "use client"
 
 import { useEffect, useState } from "react"
-import dynamic from "next/dynamic"
-
-
 import { useRouter } from "next/navigation"
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card"
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"
@@ -18,92 +15,78 @@ import {
   Legend,
   LabelList,
 } from "recharts"
-import { PeriodDistributionChart } from "@/components/period-distribution-chart"
 import { Button } from "@/components/ui/button"
 import { useMediaQuery } from "@/hooks/use-media-query"
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select"
 import { Toaster } from "sonner"
 import { toast } from "@/components/ui/use-toast"
-import {
-  AlertDialog,
-  AlertDialogAction,
-  AlertDialogCancel,
-  AlertDialogContent,
-  AlertDialogDescription,
-  AlertDialogFooter,
-  AlertDialogHeader,
-  AlertDialogTitle,
-  AlertDialogTrigger,
-} from "@/components/ui/alert-dialog"
 
-// Adicione a importação do componente AdvancedAnalysis
+
 import { AdvancedAnalysis } from "@/components/advanced-analysis"
-// Define the survey blocks for reference
+
+// Definição dos blocos da pesquisa
 const surveyBlocks = [
   {
     id: "b01",
     title: "Como eu me vejo",
     questions: [
-      { id: "q1", text: "Sou capaz de desenvolver as habilidades exigidas pelo curso." },
-      { id: "q2", text: "Costumo duvidar da qualidade dos meus projetos em comparação com os dos colegas." },
-      { id: "q3", text: "Quando recebo críticas nos, sou capaz de usá-las de forma construtiva." },
-      { id: "q4", text: "Sou impedido de arriscar ideias novas nos projetos por medo de errar." },
-      { id: "q5", text: "Sou emocionalmente afetado(a) por críticas negativas no geral." },
-      { id: "q6", text: "Acho que as coisas têm que ser como penso, do contrário isso me afeta." },
+      { id: "01", text: "Sou capaz de desenvolver as habilidades exigidas pela empresa." },
+      { id: "02", text: "Costumo duvidar da qualidade das tarefas confiadas a mim em comparação com os dos colegas." },
+      { id: "03", text: "Quando recebo críticas nos projetos, sou capaz de usá-las de forma construtiva." },
+      { id: "04", text: "Sou capaz de melhorar meu desempenho profissional com esforço e novas estratégias." },
+      { id: "05", text: "Sou impedido de arriscar ideias novas nos campo de atuação por medo de errar." },
+      { id: "06", text: "Sou ansioso(a) ou estressado(a) devido à carga de trabalhos." },
+      { id: "07", text: "Fico nervoso(a) ao apresentar meus projetos para coordenadores e colegas." },
+      { id: "08", text: "Sou motivado(a) e sinto prazer ao desenvolver tarefas criativos." },
+      { id: "09", text: "Sou emocionalmente afetado(a) por críticas negativas." },
+      { id: "10", text: "Sou capaz de equilibrar minha vida profissional e minha vida pessoal." },
     ],
   },
   {
     id: "b02",
     title: "Como eu vejo o mundo",
     questions: [
-      { id: "q7", text: "O esforço e dedicação sempre resultam em sucesso." },
-      { id: "q8", text: "O aprendizado é um processo contínuo e posso melhorar ao longo do tempo." },
-      { id: "q9", text: "Os desafios acadêmicos fazem parte do meu crescimento pessoal." },
-      { id: "q10", text: "O ambiente acadêmico é competitivo e difícil de lidar." },
-      { id: "q11", text: "O fracasso em um projeto reflete diretamente minha capacidade." },
+      { id: "11", text: "O mundo profissional é um ambiente justo." },
+      { id: "12", text: "O esforço e dedicação sempre resultam em sucesso profissional." },
+      { id: "13", text: "O fracasso em um projeto é um reflexo direto da minha capacidade." },
+      { id: "14", text: "O aprendizado é um processo contínuo e posso melhorar ao longo do tempo." },
+      { id: "15", text: "Os desafios profissionais fazem parte do meu crescimento pessoal." },
     ],
   },
   {
     id: "b03",
-    title: "Como eu vejo as pessoas e o futuro",
+    title: "Como eu vejo as pessoas",
     questions: [
-      { id: "q12", text: "Os professores e colegas estão dispostos a me ajudar em meu desenvolvimento acadêmico." },
-      { id: "q13", text: "As críticas feitas pelos professores e colegas são justas e ajudam no meu aprendizado." },
-      { id: "q14", text: "Comparar meu trabalho com o dos outros me causa insegurança." },
-      { id: "q15", text: "Os feedbacks que recebo são construtivos e ajudam no meu desenvolvimento." },
-      { id: "q16", text: "Trabalhar em equipe me deixa desconfortável." },
-      { id: "q17", text: "Me vejo atuando como futuro Arquiteto(a)." },
-      { id: "q18", text: "Consigo passar pelos desafios comuns a um estudante de arquitetura." },
-      {
-        id: "q19",
-        text: "Estou disposto a aprender coisas novas e fora da minha área de conforto ao longo do meu caminho profissional.",
-      },
-      { id: "q20", text: "Acredito que na jornada da vida temos que aprender diferentes perspectivas e orientações." },
+      { id: "16", text: "Os meus colegas estão dispostos a me ajudar em meu desenvolvimento profissional." },
+      { id: "17", text: "As críticas feitas pelas outras pessoas são justas e ajudam no meu aprendizado." },
+      { id: "18", text: " As pessoas ao meu redor me veem como um profissional competente." },
+      { id: "19", text: "O Comparar meu trabalho com o dos outros me causa insegurança." },
+      { id: "20", text: " Os feedbacks que recebo são construtivos e ajudam no meu desenvolvimento." },
     ],
   },
   {
     id: "b04",
-    title: "Universidade",
+    title: "Empresa",
     questions: [
-      { id: "q21", text: "A universidade fornece suporte adequado para meu desenvolvimento acadêmico e emocional." },
-      { id: "q22", text: "A carga horária e os prazos estabelecidos pela universidade são realistas." },
-      { id: "q23", text: "O curso está alinhado com minhas expectativas profissionais e acadêmicas." },
-      { id: "q24", text: "O suporte da instituição é suficiente para meu aprendizado." },
-      { id: "q25", text: "A estrutura da universidade favorece meu desempenho acadêmico." },
-      { id: "q26", text: "Estou aberto a mudanças e o que pode me fazer bem." },
+      { id: "21", text: "A empresa fornece suporte adequado para meu desenvolvimento profissional e emocional." },
+      { id: "22", text: " O ambiente de trabalho é acolhedor e estimula meu crescimento profissional." },
+      { id: "23", text: "A carga horária e os prazos estabelecidos pela empresa são realistas." },
+      { id: "24", text: " A empresa oferece oportunidades suficientes para práticas e aplicações do conhecimento." },
+      { id: "25", text: "As tarefas estabelecidas estão alinhadas com minhas expectativas profissionais e pessoais." },
     ],
   },
 ]
 
-// Custom label formatter for question text
+// 
 const formatQuestionText = (text: string, maxLength: number) => {
   if (text.length > maxLength) {
-    return text.substring(0, maxLength) + "..."
+    //return text.substring(0, maxLength) + "..."
+    return `${text.substring(0, maxLength)}...`
   }
   return text
 }
 
-// Custom label for bar values
+// Renderiza um rótulo customizado para os valores nas barras do gráfico
+// biome-ignore lint/suspicious/noExplicitAny: <explanation>
 const renderCustomBarLabel = (props: any) => {
   const { x, y, width, value } = props
   return value > 0 ? (
@@ -112,42 +95,22 @@ const renderCustomBarLabel = (props: any) => {
     </text>
   ) : null
 }
-
-// Custom label for pie chart
-const renderCustomPieLabel = (props: any) => {
-  const { cx, cy, midAngle, innerRadius, outerRadius, percent, index, name, value } = props
-  const RADIAN = Math.PI / 180
-  const radius = innerRadius + (outerRadius - innerRadius) * 0.5
-  const x = cx + radius * Math.cos(-midAngle * RADIAN)
-  const y = cy + radius * Math.sin(-midAngle * RADIAN)
-
-  return (
-    <text x={x} y={y} fill="white" textAnchor={x > cx ? "start" : "end"} dominantBaseline="central" fontSize={12}>
-      {`${name}: ${value}`}
-    </text>
-  )
-}
-
 export default function ResultsPage() {
-  
   const router = useRouter()
+  // biome-ignore lint/suspicious/noExplicitAny: <explanation>
   const [responses, setResponses] = useState<any[]>([])
+  // biome-ignore lint/suspicious/noExplicitAny: <explanation>
   const [chartData, setChartData] = useState<Record<string, any[]>>({})
-  const [periodData, setPeriodData] = useState<any[]>([])
   const [isAuthenticated, setIsAuthenticated] = useState(false)
   const [isLoading, setIsLoading] = useState(true)
   const [selectedView, setSelectedView] = useState<"horizontal" | "vertical">("horizontal")
-  const [selectedPeriod, setSelectedPeriod] = useState<string>("all")
-  const [availablePeriods, setAvailablePeriods] = useState<string[]>([])
   const [emailCount, setEmailCount] = useState(0)
   const [isResetting, setIsResetting] = useState(false)
 
-  // Check if screen is mobile
   const isMobile = useMediaQuery("(max-width: 768px)")
   const isSmallScreen = useMediaQuery("(max-width: 1024px)")
 
   useEffect(() => {
-    // Check if user is authenticated
     const authenticated = localStorage.getItem("researcherAuthenticated") === "true"
     setIsAuthenticated(authenticated)
 
@@ -157,56 +120,28 @@ export default function ResultsPage() {
     }
 
     fetchData()
-  }, [router, selectedPeriod])
+  }, [router]) // Dependência do router para o caso de redirecionamento
 
   const fetchData = async () => {
     setIsLoading(true)
-
     try {
       const response = await fetch("/api/get-responses")
-
       if (!response.ok) {
         throw new Error("Erro ao buscar dados")
       }
-
       const data = await response.json()
 
-      // Processar respostas - ajustando para acessar o campo 'responses'
+      // biome-ignore lint/suspicious/noExplicitAny: <explanation>
       const allResponses = data.responses.map((item: any) => ({
         id: item.id,
-        period: item.period,
-        responses: item.responses, // Mantendo a estrutura original
+        // period: item.period, // Removido
+        responses: item.responses,
         created_at: item.created_at,
       }))
 
       setResponses(allResponses)
       setEmailCount(data.emailCount)
-
-      // Get unique periods from responses
-      const periods = allResponses
-        .map((response: any) => response.period || "Não informado")
-        .filter((value: string, index: number, self: string[]) => self.indexOf(value) === index)
-        .sort()
-
-      setAvailablePeriods(periods)
-
-      // Process period distribution data
-      const periodCounts: Record<string, number> = {}
-      allResponses.forEach((response: any) => {
-        const period = response.period || "Não informado"
-        periodCounts[period] = (periodCounts[period] || 0) + 1
-      })
-
-      const periodChartData = Object.entries(periodCounts).map(([period, count]) => ({
-        name: `${period}º Período`,
-        value: count,
-      }))
-
-      setPeriodData(periodChartData)
-
-      // Process data for charts based on selected period
-      processChartData(allResponses, selectedPeriod)
-
+      processChartData(allResponses)
       setIsLoading(false)
     } catch (error) {
       console.error("Erro ao buscar dados:", error)
@@ -219,20 +154,18 @@ export default function ResultsPage() {
     }
   }
 
-  const processChartData = (responses: any[], periodFilter: string) => {
-    // Filter responses by period if needed
-    const filteredResponses = periodFilter === "all" ? responses : responses.filter((r) => r.period === periodFilter)
-
-    // Process data for charts
+  // biome-ignore lint/suspicious/noExplicitAny: <explanation>
+  const processChartData = (currentResponses: any[]) => {
+    // biome-ignore lint/suspicious/noExplicitAny: <explanation>
     const processedData: Record<string, any[]> = {}
 
+    // biome-ignore lint/complexity/noForEach: <explanation>
     surveyBlocks.forEach((block) => {
       const blockData = block.questions.map((question) => {
-        // Count responses for each option (1-4)
-        const counts = [0, 0, 0, 0]
+        const counts = [0, 0, 0, 0] // [Discordo Totalmente, Discordo, Concordo, Concordo Totalmente]
 
-        filteredResponses.forEach((response) => {
-          // Acessar as respostas do campo 'responses' em vez de diretamente no objeto
+        // biome-ignore lint/complexity/noForEach: <explanation>
+        currentResponses.forEach((response) => {
           const responseData = response.responses || {}
           const value = Number.parseInt(responseData[question.id] || "0")
           if (value >= 1 && value <= 4) {
@@ -240,24 +173,21 @@ export default function ResultsPage() {
           }
         })
 
-        // Use different text lengths based on screen size
         const maxTextLength = isMobile ? 20 : isSmallScreen ? 40 : 60
 
         return {
           question: question.text,
           questionShort: formatQuestionText(question.text, maxTextLength),
           questionId: question.id,
-          questionNumber: question.id.substring(1),
+          questionNumber: question.id.startsWith("q") ? question.id.substring(1) : question.id, // Trata IDs como "01" e "q21"
           "Discordo Totalmente": counts[0],
           Discordo: counts[1],
           Concordo: counts[2],
           "Concordo Totalmente": counts[3],
         }
       })
-
       processedData[block.id] = blockData
     })
-
     setChartData(processedData)
   }
 
@@ -266,40 +196,35 @@ export default function ResultsPage() {
     router.push("/")
   }
 
-  const handlePeriodChange = (period: string) => {
-    setSelectedPeriod(period)
-  }
-
-  const handleResetEmails = async () => {
+  const resetData = async (resetType: "emails" | "all") => {
     setIsResetting(true)
-
     try {
-      const response = await fetch("/api/reset-data", {
+      const apiResponse = await fetch("/api/reset-data", {
         method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({ resetType: "emails" }),
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ resetType }),
       })
 
-      const data = await response.json()
+      const data = await apiResponse.json()
 
-      if (!response.ok) {
-        throw new Error(data.message || "Erro ao resetar emails")
+      if (!apiResponse.ok) {
+        throw new Error(data.message || `Erro ao resetar ${resetType === "emails" ? "emails" : "todos os dados"}`)
       }
 
       toast({
-        title: "Lista de emails resetada",
-        description: "A lista de emails utilizados foi limpa com sucesso.",
+        title: resetType === "emails" ? "Lista de emails resetada" : "Dados resetados",
+        description: resetType === "emails"
+          ? "A lista de emails utilizados foi limpa com sucesso."
+          : "Todas as respostas da pesquisa foram removidas com sucesso.",
+        variant: resetType === "all" ? "destructive" : undefined,
       })
-
-      // Atualizar dados
-      fetchData()
-    } catch (error) {
-      console.error("Erro ao resetar emails:", error)
+      fetchData() // Re-fetch data to update counts
+    // biome-ignore lint/suspicious/noExplicitAny: <explanation>
+    } catch (error: any) {
+      console.error(`Erro ao resetar ${resetType}:`, error)
       toast({
         title: "Erro",
-        description: "Ocorreu um erro ao resetar a lista de emails.",
+        description: error.message || `Ocorreu um erro ao resetar os ${resetType === "emails" ? "emails" : "dados"}.`,
         variant: "destructive",
       })
     } finally {
@@ -307,45 +232,8 @@ export default function ResultsPage() {
     }
   }
 
-  const handleResetAllData = async () => {
-    setIsResetting(true)
 
-    try {
-      const response = await fetch("/api/reset-data", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({ resetType: "all" }),
-      })
-
-      const data = await response.json()
-
-      if (!response.ok) {
-        throw new Error(data.message || "Erro ao resetar dados")
-      }
-
-      toast({
-        title: "Dados resetados",
-        description: "Todas as respostas da pesquisa foram removidas com sucesso.",
-        variant: "destructive",
-      })
-
-      // Atualizar dados
-      fetchData()
-    } catch (error) {
-      console.error("Erro ao resetar dados:", error)
-      toast({
-        title: "Erro",
-        description: "Ocorreu um erro ao resetar os dados.",
-        variant: "destructive",
-      })
-    } finally {
-      setIsResetting(false)
-    }
-  }
-
-  if (isLoading) {
+  if (!isAuthenticated || isLoading) { // Mostrar loading se não autenticado ou carregando
     return (
       <div className="min-h-screen flex items-center justify-center">
         <p>Loading...</p>
@@ -360,35 +248,11 @@ export default function ResultsPage() {
     "#0ea5e9", // Azul (Concordo Totalmente)
   ]
 
-  const periodColors = [
-    "#3b82f6",
-    "#10b981",
-    "#f59e0b",
-    "#ef4444",
-    "#8b5cf6",
-    "#ec4899",
-    "#06b6d4",
-    "#84cc16",
-    "#6366f1",
-    "#14b8a6",
-    "#f43f5e",
-    "#d946ef",
-  ]
-
-  // Determine chart height based on screen size and number of questions
   const getChartHeight = (blockId: string) => {
     const questionCount = surveyBlocks.find((b) => b.id === blockId)?.questions.length || 0
-
-    if (isMobile) {
-      // On mobile, make height proportional to number of questions
-      return Math.max(400, questionCount * 60)
-    }
-
-    if (isSmallScreen) {
-      return Math.max(500, questionCount * 50)
-    }
-
-    return 700 // Default height for larger screens
+    if (isMobile) return Math.max(400, questionCount * 60)
+    if (isSmallScreen) return Math.max(500, questionCount * 50)
+    return 700
   }
 
   return (
@@ -425,82 +289,34 @@ export default function ResultsPage() {
         </CardHeader>
       </Card>
 
-      {/* Email Management */}
       <Card className="bg-card/50">
         <CardHeader className="pb-3">
           <CardTitle className="text-xl font-semibold">Gerenciamento de Dados</CardTitle>
-          <CardDescription>Controle os emails e respostas do estudo</CardDescription>
+          <CardDescription>Controle os emails e respostas do estudo.</CardDescription>
         </CardHeader>
         <CardContent>
-          <div className="grid gap-6 sm:grid-cols-2">
+          <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-2">
             <div className="p-4 rounded-lg bg-background/80 border shadow-sm">
-              <p className="text-sm font-medium text-muted-foreground mb-1">Total de emails utilizados</p>
+              <p className="text-sm font-medium text-muted-foreground mb-1">Emails utilizados</p>
               <p className="text-2xl font-bold">{emailCount}</p>
             </div>
             <div className="p-4 rounded-lg bg-background/80 border shadow-sm">
-              <p className="text-sm font-medium text-muted-foreground mb-1">Total de respostas coletadas</p>
+              <p className="text-sm font-medium text-muted-foreground mb-1">Respostas coletadas</p>
               <p className="text-2xl font-bold">{responses.length}</p>
             </div>
           </div>
         </CardContent>
       </Card>
 
-      {/* Period Distribution Chart */}
-      <Card className="bg-card/50">
-        <CardHeader className="pb-3">
-          <CardTitle className="text-xl font-semibold">Distribuição por Período</CardTitle>
-          <CardDescription>Número de respostas por período acadêmico</CardDescription>
-        </CardHeader>
-        <CardContent>
-          <div className="h-[400px] sm:h-[350px]">
-            <PeriodDistributionChart data={periodData} isMobile={isMobile} />
-          </div>
-        </CardContent>
-      </Card>
-
-      {/* Period Filter */}
-      <Card className="bg-card/50">
-        <CardHeader className="pb-3">
-          <CardTitle className="text-xl font-semibold flex items-center gap-2">
-            <span>Filtrar por Período</span>
-            <span className="text-sm font-normal text-muted-foreground">({responses.length} respostas)</span>
-          </CardTitle>
-          <CardDescription>Selecione um período específico para visualizar os resultados</CardDescription>
-        </CardHeader>
-        <CardContent>
-          <div className="space-y-4">
-            <Select value={selectedPeriod} onValueChange={handlePeriodChange}>
-              <SelectTrigger className="w-full sm:w-[300px] bg-background/80">
-                <SelectValue placeholder="Selecione um período" />
-              </SelectTrigger>
-              <SelectContent>
-                <SelectItem value="all">Todos os períodos</SelectItem>
-                {availablePeriods.map((period) => (
-                  <SelectItem key={period} value={period}>
-                    {period === "Não informado" ? period : `${period}º Período`}
-                  </SelectItem>
-                ))}
-              </SelectContent>
-            </Select>
-            <div className="flex items-center gap-2 text-sm text-muted-foreground bg-muted/30 p-2 rounded-md">
-              <span className="inline-block w-2 h-2 rounded-full bg-primary/70"></span>
-              {selectedPeriod === "all"
-                ? "Mostrando dados de todos os períodos"
-                : `Mostrando dados apenas do ${selectedPeriod}º período`}
-            </div>
-          </div>
-        </CardContent>
-      </Card>
-
-      <Tabs defaultValue="bloco1" className="space-y-4">
+      <Tabs defaultValue={surveyBlocks[0]?.id || "b01"} className="space-y-4">
         <TabsList className="grid grid-cols-2 lg:grid-cols-4 gap-2 bg-muted/30 p-1">
           {surveyBlocks.map((block) => (
-            <TabsTrigger 
-              key={block.id} 
+            <TabsTrigger
+              key={block.id}
               value={block.id}
               className="data-[state=active]:bg-background data-[state=active]:shadow-sm transition-all"
             >
-              {isMobile ? block.id.replace("bloco", "B") : block.title.split(":")[0]}
+              {isMobile ? block.id.replace("b", "B") : block.title.split(":")[0]}
             </TabsTrigger>
           ))}
         </TabsList>
@@ -511,33 +327,21 @@ export default function ResultsPage() {
               <CardHeader className="pb-2">
                 <CardTitle className="text-xl font-semibold">{block.title}</CardTitle>
                 <CardDescription className="text-sm">
-                  Distribuição das respostas para cada pergunta (1 = Discordo Totalmente, 4 = Concordo Totalmente)
+                  Distribuição das respostas (1 = Discordo Totalmente, 4 = Concordo Totalmente)
                 </CardDescription>
               </CardHeader>
               <CardContent className="pt-4">
-                <div 
-                  style={{ height: `${getChartHeight(block.id)}px` }} 
+                <div
+                  style={{ height: `${getChartHeight(block.id)}px` }}
                   className="w-full bg-background/80 p-4 rounded-lg border shadow-sm"
                 >
                   {chartData[block.id] && (
                     <ChartContainer
                       config={{
-                        "Discordo Totalmente": {
-                          label: "Discordo Totalmente",
-                          color: chartColors[0],
-                        },
-                        Discordo: {
-                          label: "Discordo",
-                          color: chartColors[1],
-                        },
-                        Concordo: {
-                          label: "Concordo",
-                          color: chartColors[2],
-                        },
-                        "Concordo Totalmente": {
-                          label: "Concordo Totalmente",
-                          color: chartColors[3],
-                        },
+                        "Discordo Totalmente": { label: "Discordo Totalmente", color: chartColors[0] },
+                        Discordo: { label: "Discordo", color: chartColors[1] },
+                        Concordo: { label: "Concordo", color: chartColors[2] },
+                        "Concordo Totalmente": { label: "Concordo Totalmente", color: chartColors[3] },
                       }}
                       className="h-full transition-all hover:opacity-95"
                     >
@@ -557,40 +361,20 @@ export default function ResultsPage() {
                             <CartesianGrid strokeDasharray="3 3" />
                             <XAxis
                               dataKey="questionNumber"
-                              label={{
-                                value: "Número da Questão",
-                                position: "insideBottom",
-                                offset: -10,
-                              }}
+                              label={{ value: "Número da Questão", position: "insideBottom", offset: -10 }}
                             />
                             <YAxis
-                              label={
-                                isMobile
-                                  ? undefined
-                                  : {
-                                      value: "Número de Respostas",
-                                      angle: -90,
-                                      position: "insideLeft",
-                                    }
-                              }
+                              label={ isMobile ? undefined : { value: "Número de Respostas", angle: -90, position: "insideLeft" }}
                             />
                             <ChartTooltip
                               content={
                                 <ChartTooltipContent
-                                  indicator="dot" //dot ou bar
-                                  nameKey="option"
-                                  valueKey="value"
-                                  formatter={(value, name, props) => {
-                                    return [value, name, props.payload.question]
-                                  }}
+                                  indicator="dot"
+                                  formatter={(value, name, props) => [value, name, props.payload.question]}
                                 />
                               }
                             />
-                            <Legend
-                              verticalAlign="top"
-                              height={36}
-                              wrapperStyle={isMobile ? { fontSize: "10px" } : undefined}
-                            />
+                            <Legend verticalAlign="top" height={36} wrapperStyle={isMobile ? { fontSize: "10px" } : undefined} />
                             <Bar dataKey="Discordo Totalmente" fill={chartColors[0]} name="Discordo Totalmente" />
                             <Bar dataKey="Discordo" fill={chartColors[1]} name="Discordo" />
                             <Bar dataKey="Concordo" fill={chartColors[2]} name="Concordo" />
@@ -610,21 +394,12 @@ export default function ResultsPage() {
                           >
                             <CartesianGrid strokeDasharray="3 3" horizontal={false} />
                             <XAxis type="number" />
-                            <YAxis
-                              dataKey="questionShort"
-                              type="category"
-                              width={isSmallScreen ? 160 : 280}
-                              tick={{ fontSize: 12 }}
-                            />
+                            <YAxis dataKey="questionShort" type="category" width={isSmallScreen ? 160 : 280} tick={{ fontSize: 12 }} />
                             <ChartTooltip
                               content={
                                 <ChartTooltipContent
                                   indicator="dot"
-                                  nameKey="option"
-                                  valueKey="value"
-                                  formatter={(value, name, props) => {
-                                    return [value, name, props.payload.question]
-                                  }}
+                                  formatter={(value, name, props) => [value, name, props.payload.question]}
                                 />
                               }
                             />
@@ -648,19 +423,20 @@ export default function ResultsPage() {
                   )}
                 </div>
 
-                {/* Tabela de detalhes das perguntas */}
                 <div className="mt-8 border rounded-md overflow-hidden overflow-x-auto">
                   <table className="w-full text-sm">
                     <thead className="bg-muted">
                       <tr>
-                        <th className="p-2 text-left">Nº</th>
-                        <th className="p-2 text-left">Pergunta</th>
+                        <th className="p-2 text-left font-medium">Nº</th>
+                        <th className="p-2 text-left font-medium">Pergunta</th>
                       </tr>
                     </thead>
                     <tbody>
                       {block.questions.map((question) => (
                         <tr key={question.id} className="border-t">
-                          <td className="p-2 font-medium whitespace-nowrap">{question.id.substring(1)}</td>
+                          <td className="p-2 font-medium whitespace-nowrap">
+                            {question.id.startsWith("q") ? question.id.substring(1) : question.id}
+                          </td>
                           <td className="p-2">{question.text}</td>
                         </tr>
                       ))}
@@ -674,7 +450,6 @@ export default function ResultsPage() {
       </Tabs>
 
       <div className="mt-8">
-        
         <AdvancedAnalysis responses={responses} chartData={chartData} />
       </div>
 
@@ -682,4 +457,3 @@ export default function ResultsPage() {
     </div>
   )
 }
-

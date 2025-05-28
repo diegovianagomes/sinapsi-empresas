@@ -1,6 +1,5 @@
 import { createClient } from "@supabase/supabase-js"
 
-// Singleton pattern para o cliente Supabase no lado do cliente
 let supabaseClient: ReturnType<typeof createClient> | null = null
 
 export const createClientSupabaseClient = () => {
