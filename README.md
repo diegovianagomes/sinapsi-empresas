@@ -1,7 +1,6 @@
-# Estudo Vivências e Saúde Mental do Estudante de Arquitetura
+# Percepções e Experiências no Ambiente de Trabalho
 
-Um sistema web moderno para conduzir pesquisa sobre arquitetura, desenvolvido com Next.js, TypeScript e Supabase. O projeto permite coletar respostas de forma segura e apresentar análises detalhadas dos resultados.
-
+Este questionário tem como objetivo coletar informações sobre desempenho, bem estar emocional, desafios e perspectivas dos colaboradores no ambiente de trabalho. Suas respostas são anônimas e serão utilizadas apenas para fins de pesquisa.
 ## 🚀 Tecnologias
 
 - [Next.js 14](https://nextjs.org/) - Framework React com renderização híbrida
