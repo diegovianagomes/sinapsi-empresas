@@ -169,7 +169,7 @@ export default function SurveyPage() {
 
   return (
     <div className="container mx-auto px-4 py-6 md:py-8">
-      <Card className="max-w-4xl mx-auto">
+      <Card className="max-w-4xl mx-auto border-4">
         <CardHeader>
           <CardTitle className="text-xl md:text-2xl">{surveyBlocks[currentBlock].title}</CardTitle>
           <CardDescription>

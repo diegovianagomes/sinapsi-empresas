@@ -105,10 +105,10 @@ export default function StudentAuthPage() {
       setIsSubmitting(false)
     }
   }
-
-  return (
-    <div className="container mx-auto px-4 py-8 md:py-12 flex items-center justify-center min-h-[80vh]">
-      <Card className="w-full max-w-md">
+//bg-white/35  border-4 shadow-sm dark:bg-gray-800 rounded-lg  p-8 md:p-8
+  return ( 
+    <div className="container  mx-auto px-4 py-8 md:py-12 flex items-center justify-center min-h-[80vh]">
+      <Card className="w-full max-w-md border-4">
         <CardHeader>
           <CardTitle>Acesso ao Estudo</CardTitle>
           <CardDescription>

@@ -13,7 +13,7 @@ export default function SurveyCompletedPage() {
 
   return (
     <div className="container mx-auto px-4 py-12 flex items-center justify-center min-h-[80vh]">
-      <Card className="max-w-lg w-full text-center">
+      <Card className="max-w-lg w-full text-center border-4">
         <CardHeader>
           <CardTitle className="text-2xl md:text-3xl">Estudo Finalizado!</CardTitle>
           <CardDescription className="text-lg">
