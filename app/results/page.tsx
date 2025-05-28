@@ -76,7 +76,7 @@ const surveyBlocks = [
   },
 ]
 
-// 
+// Formata o texto da pergunta para um tamanho máximo, adicionando "..." se necessário
 const formatQuestionText = (text: string, maxLength: number) => {
   if (text.length > maxLength) {
     //return text.substring(0, maxLength) + "..."

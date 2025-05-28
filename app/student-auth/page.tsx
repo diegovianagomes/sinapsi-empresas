@@ -8,14 +8,12 @@ import { Button } from "@/components/ui/button"
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from "@/components/ui/card"
 import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select"
 import { Toaster } from "sonner"
 import { toast } from "@/components/ui/use-toast"
 
 export default function StudentAuthPage() {
   const router = useRouter()
   const [email, setEmail] = useState("")
-  const [period, setPeriod] = useState("")
   const [errors, setErrors] = useState<{ email?: string; period?: string }>({})
   const [isSubmitting, setIsSubmitting] = useState(false)
 
@@ -39,9 +37,6 @@ export default function StudentAuthPage() {
       newErrors.email = "Ops! Esse e-mail parece estar incorreto. Tente novamente ✨"
     }
 
-    //if (!period) {
-    //  newErrors.period = "Por favor, selecione um período para continuar 😉"
-    //}
 
     // If there are errors, show them and return
     if (Object.keys(newErrors).length > 0) {
@@ -131,7 +126,7 @@ export default function StudentAuthPage() {
                   value={email}
                   onChange={(e) => setEmail(e.target.value)}
                   className={errors.email ? "border-red-500" : ""}
-                  placeholder="oscar@niemeyer.com.br"
+                  placeholder="seu@email.com.br"
                 />
                 {errors.email && <p className="text-sm text-red-500">{errors.email}</p>}
               </div>
