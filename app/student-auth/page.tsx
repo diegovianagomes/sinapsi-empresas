@@ -112,7 +112,7 @@ export default function StudentAuthPage() {
         <CardHeader>
           <CardTitle>Acesso ao Estudo</CardTitle>
           <CardDescription>
-            Informe seu e-mail para prosseguir. Apenas o período será armazenado para análise, e cada e-mail pode ser utilizado uma única vez.
+            Informe seu e-mail para prosseguir. Cada e-mail pode ser utilizado uma única vez.
           </CardDescription>
         </CardHeader>
         <form onSubmit={handleSubmit}>
