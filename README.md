@@ -1,6 +1,6 @@
 # Percepções e Experiências no Ambiente de Trabalho
 
-Este questionário tem como objetivo coletar informações sobre desempenho, bem estar emocional, desafios e perspectivas dos colaboradores no ambiente de trabalho. Suas respostas são anônimas e serão utilizadas apenas para fins de pesquisa.
+Este questionário tem como objetivo coletar informações sobre desempenho, bem estar emocional, desafios e perspectivas dos colaboradores no ambiente de trabalho. Suas respostas são anônimas e serão utilizadas apenas para fins de pesquisa.wwww
 ## 🚀 Tecnologias
 
 - [Next.js 14](https://nextjs.org/) - Framework React com renderização híbrida
